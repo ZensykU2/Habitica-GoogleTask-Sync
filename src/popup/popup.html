@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitica Sync</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: var(--text);
+            margin: 0;
+            width: 350px;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .container {
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0 0 8px 0;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: var(--text-dim);
+            margin-bottom: 24px;
+        }
+
+        .section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: transform 0.2s;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-google {
+            background: white;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .btn-google:hover {
+            background: #f9fafb;
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .connected-state {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .status-msg {
+            margin-top: 16px;
+            font-size: 0.8rem;
+            text-align: center;
+            min-height: 1.2em;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #334155;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h2>Habitica Sync</h2>
+            <div class="subtitle">Google Tasks Bridge</div>
+        </header>
+
+        <!-- Auth State: Logged Out -->
+        <div id="loggedOutView">
+            <div class="section">
+                <div class="form-group">
+                    <label for="habiticaUserId">User ID</label>
+                    <input type="text" id="habiticaUserId" placeholder="xxxx-xxxx-xxxx">
+                </div>
+                <div class="form-group">
+                    <label for="habiticaToken">API Token</label>
+                    <input type="password" id="habiticaToken" placeholder="••••••••••••">
+                </div>
+                <button id="saveBtn" class="btn btn-primary">Save & Connect</button>
+            </div>
+        </div>
+
+        <!-- Auth State: Logged In -->
+        <div id="loggedInView" class="hidden">
+            <div class="section connected-state">
+                <div class="status-badge">
+                    <span>●</span> Habitica Connected
+                </div>
+                <div style="font-size: 0.9rem; margin-bottom: 4px;" id="displayUserId"></div>
+                <button id="logoutBtn" class="btn btn-secondary"
+                    style="padding: 6px; font-size: 0.75rem; width: auto; margin: 0 auto;">Disconnect</button>
+            </div>
+
+            <div class="section">
+                <button id="googleAuthBtn" class="btn btn-google">
+                    <img src="https://www.google.com/favicon.ico" width="16" height="16" alt="Google">
+                    Link Google Tasks
+                </button>
+                <div class="toggle-group">
+                    <label style="margin-bottom: 0;">Automatic Sync</label>
+                    <label class="switch">
+                        <input type="checkbox" id="syncEnabled">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button id="manualSyncBtn" class="btn btn-primary">
+                Sync Now
+            </button>
+        </div>
+
+        <div id="status" class="status-msg"></div>
+    </div>
+
+    <script type="module" src="./popup.ts"></script>
+</body>
+
+</html>
