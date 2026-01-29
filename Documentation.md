@@ -10,16 +10,22 @@
 ### 2. Google Tasks (OAuth 2.0)
 To run this extension yourself, you need to create your own Google OAuth Client ID:
 1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
-2. Create a new project.
+2. Create a new project (e.g., "Habitica-Google-Sync").
 3. Enable the **Google Tasks API** under "APIs & Services > Library".
-4. Go to "APIs & Services > Credentials".
-5. Click **Create Credentials > OAuth client ID**.
-6. Application Type: **Web application**.
-7. Authorized JavaScript origins: `https://<YOUR_EXTENSION_ID>.chromiumapp.org`. (Get your ID from `chrome://extensions` after loading the unpacked `dist` folder).
-8. Copy the **Client ID** (the part before `.apps.googleusercontent.com`).
-9. Create a `.env` file in the project root (or copy `.env.example`).
-10. Add your ID: `VITE_GOOGLE_CLIENT_ID=your_id_here`.
-11. Run `npm run build`. The build process will automatically inject this into the final manifest.
+4. Configure the **OAuth consent screen**:
+   - User Type: **Internal** (if using Google Workspace) or **External**
+   - Add scope: `https://www.googleapis.com/auth/tasks`
+5. Go to "APIs & Services > Credentials".
+6. Click **Create Credentials > OAuth client ID**.
+7. Application Type: **Chrome extension**.
+8. Name: e.g., "Habitica Sync Extension"
+9. Extension ID: Get your ID from `chrome://extensions` after loading 
+   the unpacked extension once (with Developer mode enabled).
+10. Copy the **Client ID** (ends with `.apps.googleusercontent.com`).
+11. Create a `.env` file in the project root (or copy `.env.example`).
+12. Add your ID: `VITE_GOOGLE_CLIENT_ID=your_client_id_here`.
+13. Run `npm run build` to rebuild with the new Client ID.
+14. Reload the extension in Chrome (`chrome://extensions` > reload button).
 
 ## Sync Logic Details
 

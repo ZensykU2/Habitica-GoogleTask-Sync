@@ -1,12 +1,11 @@
 # Habitica <-> Google Tasks Sync Extension
 
-A powerful Chrome Extension built with TypeScript and Vite that provides 2-way synchronization between Habitica and Google Tasks. 
+A Chrome Extension built with TypeScript and Vite that provides 2-way synchronization between Habitica and Google Tasks. 
 
 ## Features
 - **2-Way Sync**: Status updates (checks) and task creation synchronize instantly between platforms.
 - **Deletion Sync**: Deleting a task on one side removes it from the other.
 - **Difficulty Mapping**: Automatic conversion between Habitica difficulty levels and Google Task titles using trailing stars (`*` to `****`).
-- **Premium UI**: Modern dark-mode interface with glassmorphism and real-time status updates.
 - **Input Persistence**: Drafts of your API keys are saved locally while you type to prevent data loss.
 
 ## Installation (Local Dev)
@@ -28,5 +27,3 @@ Detailed setup instructions for Google Cloud and Habitica API keys can be found 
 - **Chrome Extension API V3**: Using modern service workers and host permissions.
 - **Axios & Fetch**: API communication.
 
-## License
-MIT
