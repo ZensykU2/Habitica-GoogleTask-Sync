@@ -23,7 +23,7 @@ To run this extension yourself, you need to create your own Google OAuth Client 
    the unpacked extension once (with Developer mode enabled).
 10. Copy the **Client ID** (ends with `.apps.googleusercontent.com`).
 11. Create a `.env` file in the project root (or copy `.env.example`).
-12. Add your ID: `VITE_GOOGLE_CLIENT_ID=your_client_id_here`.
+12. Add your ID: `VITE_GOOGLE_CLIENT_ID=your_client_id_here` without the `.apps.googleusercontent.com`.
 13. Run `npm run build` to rebuild with the new Client ID.
 14. Reload the extension in Chrome (`chrome://extensions` > reload button).
 
